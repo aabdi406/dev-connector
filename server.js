@@ -18,8 +18,8 @@ const db = require('./config/keys').mongoURI;
 
 // Connect to MongoDB
 mongoose
-  .connect(db)
-  .then(() => console.log('MongoDB Connected'), { useNewUrlParser: true })
+  .connect(db, { useNewUrlParser: true })
+  .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
 // Passport middleware
