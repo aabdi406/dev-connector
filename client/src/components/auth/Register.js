@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import classnames from 'classnames';
-import { connect } from 'react-redux';        // connects redux to this component
+import { withRouter } from 'react-router-dom';  // creates a new component that is "connected" to the router
+import classnames from 'classnames';            // for setting CSS class names
+import { connect } from 'react-redux';          // connects redux to this component
 import { registerUser } from '../../actions/authActions';   // the action that will be triggered when form is submitted
 
 class Register extends Component {
@@ -20,6 +20,20 @@ class Register extends Component {
     // this.onSubmit = this.onSubmit.bind(this);
   }
 
+  // runs after the component output has been rendered to the DOM
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
+  // this runs when your component receives new properties
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });      // sets state of this component to given state
+    }
+  }
+
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -34,23 +48,16 @@ class Register extends Component {
       password2: this.state.password2
     }
 
-    this.props.registerUser(newUser);
-
-    // axios.post('/api/users/register', newUser)
-    //   .then(res => console.log(res.data))
-    //   .catch(err => this.setState({ errors: err.response.data }));
+    // registerUser is an action brought in from authActions that takes in the newUser being registered
+    this.props.registerUser(newUser, this.props.history);
   }
 
   render() {
     // this is component state
     const { errors } = this.state;
 
-    // this is from root reducer, which passes in a state object of auth, which contains user information
-    const { user } = this.props.auth;
-
     return (
       <div className="register">
-        {user ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -122,14 +129,16 @@ class Register extends Component {
 // React component props being mapped to prop types; good practice
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
-// auth state from rooter reducer can be accessed as a prop called auth in this componenet
+// this is called every time the state in the store is updated
 const mapStateToProps = (state) => ({
-  auth: state.auth
-})
+  auth: state.auth,
+  errors: state.errors
+});
 
-// registerUser contains the authActions payload
-// mapStateToProps is a function that brings in a parameter 
-export default connect(mapStateToProps, { registerUser })(Register);
+// mapStateToProps "subscribes" this component to Redux store updates [mapStateToProps]
+// registerUser returns a dispatch object [mapDispatchToProps]
+export default connect(mapStateToProps, { registerUser })(withRouter(Register));
