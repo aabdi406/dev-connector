@@ -91,6 +91,7 @@ Login.propTypes = {
   errors: PropTypes.object.isRequired
 }
 
+// this is called every time the state in the store is updated
 const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors
