@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';  // creates a new component that is "connected" to the router
-import classnames from 'classnames';            // for setting CSS class names
 import { connect } from 'react-redux';          // connects redux to this component
 import { registerUser } from '../../actions/authActions';   // the action that will be triggered when form is submitted
 import TextFieldGroup from '../common/TextFieldGroup';
