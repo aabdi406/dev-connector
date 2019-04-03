@@ -2,16 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deleteExperience } from '../../actions/profileActions';
+import formatDate from '../../utils/formatDate';
 
 class Experience extends Component {
   onDeleteClick = (id) => {
     this.props.deleteExperience(id);
-  }
-
-  formatDate = (date) => {
-    date = new Date(date);
-    const formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-    return formattedDate;
   }
 
   render() {
@@ -19,7 +14,7 @@ class Experience extends Component {
       <tr key={exp._id}>
         <td>{exp.company}</td>
         <td>{exp.title}</td>
-        <td>{this.formatDate(exp.from)} - {exp.current ? 'Current' : this.formatDate(exp.to)}</td>
+        <td>{formatDate(exp.from)} - {exp.current ? 'Current' : formatDate(exp.to)}</td>
         <td><button onClick={() => { this.onDeleteClick(exp._id) }} className="btn btn-danger">Delete</button></td>
       </tr>
     ))

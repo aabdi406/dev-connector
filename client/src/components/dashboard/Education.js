@@ -2,16 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deleteEducation } from '../../actions/profileActions';
+import formatDate from '../../utils/formatDate';
 
 class Education extends Component {
   onDeleteClick = (id) => {
     this.props.deleteEducation(id);
-  }
-
-  formatDate = (date) => {
-    date = new Date(date);
-    const formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-    return formattedDate;
   }
 
   render() {
@@ -19,7 +14,7 @@ class Education extends Component {
       <tr key={edu._id}>
         <td>{edu.school}</td>
         <td>{edu.degree}</td>
-        <td>{this.formatDate(edu.from)} - {edu.current ? 'Current' : this.formatDate(edu.to)}</td>
+        <td>{formatDate(edu.from)} - {edu.current ? 'Current' : formatDate(edu.to)}</td>
         <td><button onClick={() => { this.onDeleteClick(edu._id) }} className="btn btn-danger">Delete</button></td>
       </tr>
     ))
