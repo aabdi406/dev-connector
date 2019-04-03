@@ -20,6 +20,24 @@ export const getCurrentProfile = () => dispatch => {
     );
 }
 
+// Get profile by handle
+export const getProfileByHandle = (handle) => dispatch => {
+  dispatch(setProfileLoading());
+  axios.get(`/api/profile/handle/${handle}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: null
+      })
+    );
+}
+
 // Create Profile
 export const createProfile = (profileData, history) => dispatch => {
   axios.post('api/profile', profileData)
@@ -73,6 +91,25 @@ export const deleteExperience = (id) => dispatch => {
     );
 }
 
+// Get all profiles
+export const getProfiles = () => dispatch => {
+  dispatch(setProfileLoading());
+
+  axios.get('/api/profile/all')
+    .then(res =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: null
+      })
+    );
+}
+
 // Delete education
 export const deleteEducation = (id) => dispatch => {
   axios.delete(`/api/profile/education/${id}`)
@@ -107,25 +144,6 @@ export const deleteAccount = () => dispatch => {
         })
       );
   }
-}
-
-// Get all profiles
-export const getProfiles = () => dispatch => {
-  dispatch(setProfileLoading());
-
-  axios.get('/api/profile/all')
-    .then(res =>
-      dispatch({
-        type: GET_PROFILES,
-        payload: res.data
-      })
-    )
-    .catch(err =>
-      dispatch({
-        type: GET_PROFILES,
-        payload: null
-      })
-    );
 }
 
 // Profile loading
